@@ -27,12 +27,15 @@
 
 // extern  Mqtt MqttThingsBoard;
 static int retry_cnt = 0;
+//static Mqtt *MqttThingsBoard = Mqtt::getInstance("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
 
 static const char *TAG = "Wifi";
 
 static void wifi_event_handler(void *arg, esp_event_base_t event_base,
                                    int32_t event_id, void *event_data)
 {
+    static Mqtt *MqttThingsBoard = Mqtt::getInstance("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
+
     switch (event_id)
     {
     case WIFI_EVENT_STA_START:
@@ -47,7 +50,7 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base,
     {
 
         ESP_LOGI(TAG, "got ip: startibg MQTT Client\n");
-        MqttThingsBoard.app_start();
+       MqttThingsBoard->app_start();
        // mqtt_app_start();
       //  Mqtt Mqtt_things("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
     }

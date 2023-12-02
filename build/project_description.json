@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "mqtt_tcp",
-    "project_version":    "1",
+    "project_version":    "80cbb31-dirty",
     "project_path":       "/home/haodv/Desktop/code/example/esp/mqtt_tcp2/tcp",
     "idf_path":           "/home/haodv/esp/esp-idf",
     "build_dir":          "/home/haodv/Desktop/code/example/esp/mqtt_tcp2/tcp/build",

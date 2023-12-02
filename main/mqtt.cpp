@@ -32,8 +32,11 @@
 // #include "esp_event.h"
 // #include "mqtt_client.h"
 static const char *TAG = "MQTT_EXAMPLE";
+using namespace std;
 uint32_t mqtt_connected_flag = 0;
- Mqtt MqttThingsBoard("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
+Mqtt* Mqtt::mInstancePtr = nullptr;
+//Mqtt MqttThingsBoard("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
+
  //Mqtt MqttThingsBoard;
 //MqttThingsBoard = new Mqtt("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
 static void log_error_if_nonzero(const char *message, int error_code)
@@ -143,6 +146,19 @@ Mqtt::Mqtt(string host, int port, string username, string password)
     // esp_mqtt_client_start(client);
  }
 
+ Mqtt* Mqtt::getInstance(string host, int port, string username, std::string password)
+{
+    // mInstancePtr = new Mqtt(host, port, username, password);
+    if(nullptr == mInstancePtr)
+    {
+        mInstancePtr = new Mqtt(host, port, username, password);
+    }
+    return mInstancePtr;
+}
+void Mqtt::getName(void)
+{
+ ESP_LOGI(TAG, "Mqtt host: %s \n", this->host);
+}
  void Mqtt::app_start(void)
  {
     esp_mqtt_client_config_t mqtt_cfg = { };
@@ -159,6 +175,8 @@ Mqtt::Mqtt(string host, int port, string username, string password)
 
 void Publisher_Task(void *params)
 {
+    Mqtt *MqttThingsBoard;
+  MqttThingsBoard = Mqtt::getInstance("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
   while (true)
   {
      ESP_LOGI(TAG, "send mqtt out\n");
@@ -171,7 +189,7 @@ void Publisher_Task(void *params)
         ESP_LOGI(TAG, "send mqtt\n");
         sprintf(json, "{\"temp\": %d}", temp);
         if(temp > 50) temp =0;
-        esp_mqtt_client_publish(MqttThingsBoard.client, "v1/devices/me/telemetry", json , 0, 1, 0);
+        esp_mqtt_client_publish(MqttThingsBoard->client, "v1/devices/me/telemetry", json , 0, 1, 0);
     }
     vTaskDelay(15000 / portTICK_PERIOD_MS);
   }
