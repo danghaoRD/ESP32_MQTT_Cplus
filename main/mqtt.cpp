@@ -46,7 +46,6 @@ static void log_error_if_nonzero(const char *message, int error_code)
     }
 }
 
-
 /*
  * @brief Event handler registered to receive MQTT events
  *
@@ -146,7 +145,7 @@ Mqtt::Mqtt(string host, int port, string username, string password)
     // esp_mqtt_client_start(client);
  }
 
- Mqtt* Mqtt::getInstance(string host, int port, string username, std::string password)
+Mqtt* Mqtt::getInstance(string host, int port, string username, std::string password)
 {
     // mInstancePtr = new Mqtt(host, port, username, password);
     if(nullptr == mInstancePtr)
@@ -155,11 +154,13 @@ Mqtt::Mqtt(string host, int port, string username, string password)
     }
     return mInstancePtr;
 }
+
 void Mqtt::getName(void)
 {
  ESP_LOGI(TAG, "Mqtt host: %s \n", this->host);
 }
- void Mqtt::app_start(void)
+ 
+void Mqtt::app_start(void)
  {
     esp_mqtt_client_config_t mqtt_cfg = { };
     mqtt_cfg.host = this->host.c_str();
@@ -175,7 +176,7 @@ void Mqtt::getName(void)
 
 void Publisher_Task(void *params)
 {
-    Mqtt *MqttThingsBoard;
+  Mqtt *MqttThingsBoard;
   MqttThingsBoard = Mqtt::getInstance("demo.thingsboard.io",1883, "Kj9nO6xI3Stzdn27st8L", "Kj9nO6xI3Stzdn27st8L");
   while (true)
   {
